@@ -1,0 +1,14 @@
+spring: 
+  activemq: 
+    broker-url: tcp://127.0.0.1:61616
+    in-memory: true
+    password: admin
+    user: admin
+    packages: 
+      trust-all: false
+      trusted: 
+    pool:
+      enabled: false
+      expiry-timeout: 0
+      idle-timeout: 30000
+      max-connections: 1

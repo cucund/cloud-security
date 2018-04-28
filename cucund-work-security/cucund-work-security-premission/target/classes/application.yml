@@ -1,0 +1,17 @@
+eureka: 
+  client:
+    serviceUrl:
+      defaultZone: http://server1:9011/eureka/
+server:
+  port: 9050
+spring:
+  application:
+    name: service-premission
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/premission?autoReconnect=true&autoReconnectForPools=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true
+    username: root
+    password: root
+    driver-class: com.mysql.jdbc.Driver
+    name: datasource
+mybatis: 
+  mapper-locations: classpath*:mapper/*.xml

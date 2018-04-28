@@ -1,0 +1,1 @@
+java -jar .\target\cucund-work-security-eureka-1.0.0  --spring.profiles.active=server

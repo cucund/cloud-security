@@ -1,0 +1,11 @@
+server:
+  port: 9030
+spring:
+  application:
+    name: service-ribbon
+eureka: 
+  client:
+    serviceUrl:
+      defaultZone: http://server1:9011/eureka/
+app: 
+  package: com.cucund.work.security.ribbon
