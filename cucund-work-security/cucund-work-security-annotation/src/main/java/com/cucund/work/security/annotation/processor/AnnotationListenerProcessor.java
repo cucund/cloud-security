@@ -2,15 +2,12 @@ package com.cucund.work.security.annotation.processor;
 
 import java.lang.reflect.Method;
 
-import javax.jms.Queue;
 
-import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -126,6 +123,12 @@ public class AnnotationListenerProcessor implements BeanPostProcessor {
 		RequestMap requestMap = new RequestMap();
 		requestMap.setPath(getUrl(result.value()));
 		requestMap.setName(name);
+		String methodStr = getMethodRest(resultRest);
+		requestMap.setMethod(methodStr);
+		return requestMap;
+	}
+
+	private String getMethodRest(RequestMethod[] resultRest) {
 		String methodStr = "";
 		if(resultRest.length==0){
 			methodStr = "*";
@@ -137,8 +140,7 @@ public class AnnotationListenerProcessor implements BeanPostProcessor {
 				methodStr = arrayGetString(strs);
 			}
 		}
-		requestMap.setMethod(methodStr);
-		return requestMap;
+		return methodStr;
 	}
 	
 	private String getUrl(String[] url){
@@ -152,11 +154,16 @@ public class AnnotationListenerProcessor implements BeanPostProcessor {
 		}
 		String[] split = path.split("/");
 		for(int i=0;i<split.length;i++){
-			if(!StringUtils.isNotBlank(split[i])){
+			String item = split[i];
+			if(!StringUtils.isNotBlank(item)){
 				continue;
 			}
 			sb.append("/");
-			sb.append(split[i]);
+			if(item.indexOf("{")==0&&item.indexOf("}")==item.length()-1){
+				sb.append("*");
+				continue;
+			}
+			sb.append(item);
 		}
 		String strn=sb.toString();
 		return strn;

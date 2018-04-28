@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.cucund.work.security.annotation.ConParameter;
+
 @RestController
 @RequestMapping("/client")
 public class ClientController {
@@ -15,7 +17,7 @@ public class ClientController {
 	@Autowired
 	RestTemplate restTemplate;
 	
-    @RequestMapping(value = "/test")
+    @RequestMapping(value = "/test/{aaaa}")
     @ResponseBody
     public String test(@RequestParam String msg){
         return restTemplate.getForObject("http://CLIENT-SERVER/abc/",String.class);
@@ -23,6 +25,7 @@ public class ClientController {
     
     @RequestMapping(value = "/registered")
     @ResponseBody
+    @ConParameter("")
     public String registered(@RequestParam String msg){
     	return restTemplate.getForObject("http://CLIENT-SERVER/abc/registered",String.class);
     }
