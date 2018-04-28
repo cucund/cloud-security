@@ -1,2 +1,4 @@
 # cloud-security
-æƒé™ç®¡ç†å’Œæ•°æ®æƒé™æž¶æž„
+¸Õ¸Õ¿ªÊ¼
+
+Æô¶¯Ë³Ðò  eureka  -> amq -> premission -> eureka-client -> ribbon

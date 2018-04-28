@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class Consumer {
 	
-	
+	/**
+	 * 如何处理 扫描到的action
+	 * @param msg
+	 */
 	@JmsListener(destination = "premission.register.queue")
 	public void offlineReceive(String msg){
 		System.out.println("premission.register.queue Msg 接受成功!! 内容:"+msg  );

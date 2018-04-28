@@ -8,22 +8,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-@RequestMapping("/activemq")
-public class AmqController {
+@RequestMapping("/client")
+public class ClientController {
 
 	
 	@Autowired
 	RestTemplate restTemplate;
 	
-    @RequestMapping(value = "/sendOffline")
+    @RequestMapping(value = "/test")
     @ResponseBody
-    public String sendOffline(@RequestParam String msg){
-        return restTemplate.getForObject("http://AMQ-SERVER/activemq/sendOffline?msg="+msg,String.class);
+    public String test(@RequestParam String msg){
+        return restTemplate.getForObject("http://CLIENT-SERVER/abc/",String.class);
     }
     
-    @RequestMapping(value = "/sendOnline")
+    @RequestMapping(value = "/registered")
     @ResponseBody
-    public String sendOnline(@RequestParam String msg){
-    	return restTemplate.getForObject("http://AMQ-SERVER/activemq/sendOnline?msg="+msg,String.class);
+    public String registered(@RequestParam String msg){
+    	return restTemplate.getForObject("http://CLIENT-SERVER/abc/registered",String.class);
     }
 }
