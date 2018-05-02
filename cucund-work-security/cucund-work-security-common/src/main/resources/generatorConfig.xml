@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" 
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="MysqlTables" targetRuntime="MyBatis3" defaultModelType="flat">
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/premission" userId="root" password="root"></jdbcConnection>
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<javaModelGenerator targetPackage="com.cucund.security.premission.model"
+			targetProject="src\main\java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<sqlMapGenerator targetPackage="com.cucund.security.premission.mysql"
+			targetProject="src\main\resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.cucund.security.premission.dao" targetProject="src\main\java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		<table schema="premission" tableName="premission_list"
+			domainObjectName="PremissionList" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false" />
+	        <property name="domainClass.className" value="PremissionListDomain" /><!--Domain类名，如果不定义将使用DO对象的类名+Domain-->
+			<property name="codeColumn" value="PERMISSION_LIST_CODE" />
+			<property name="domainClass.package" value="com.cucund.security.premission" /><!--这个表对应的domain类的包，会覆盖默认包-->
+	        <property name="domainClass.subpackage" value="domain" /><!--相对于package的子包-->
+	        <property name="domainClass.domainExcludeFields" value="memo,dataState,gmtModified,gmtCreate" /><!--不需要生成的属性名-->
+	        <property name="domainClass.rootClass" value="BaseDomain" /><!--继承的父类，覆盖默认的父类-->
+	        <property name="rootInterface" value="Serializable"/><!--默认实现的接口-->
+	        <property name="imports" value="java.io.Serializable"/>
+	       <!--  <property name="status1.type" value="enum:" /> --><!--status属性的类型，该属性为空，那么类型为DO对象中该属性的类型。该属性为enums:为枚举，将自动生成枚举类，枚举类的类名为enums:后面的字符串，如果没有默认为属性名+Kind-->
+	       <!--  <property name="status1.enumDef" value="code:msg:name,INIT:I:初始化:init,SUCCESS:S:成功:success"/> --><!--枚举类型定义,逗号分隔作为列分隔符，第一列为属性名称，后面每一列是属性的定义,分号作为枚举类中属性的分隔-->
+		</table>
+	</context>
+</generatorConfiguration> 
