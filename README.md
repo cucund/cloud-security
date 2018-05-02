@@ -3,7 +3,7 @@
 
 运行环境下必须先开枪activeMQ  现在还未把AMQ集成进这套系统中
 
-启动顺序  eureka  -> amq -> premission -> eureka-client -> ribbon
+启动顺序  eureka -> premission -> eureka-client -> ribbon
 
 #现阶段完成  -->
 	当前pom关联 annotation包的 jar包,  会自动扫描到当前jar包所有的@RequestMapping@PostMapping@GetMapping

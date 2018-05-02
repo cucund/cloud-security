@@ -14,4 +14,4 @@ spring:
     driver-class: com.mysql.jdbc.Driver
     name: datasource
 mybatis: 
-  mapper-locations: classpath*:mapper/*.xml
+  mapper-locations: classpath*:com/cucund/security/*/*.xml

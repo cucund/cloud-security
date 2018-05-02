@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cucund.work.security.annotation.ConParameter;
+import com.cucund.work.security.annotation.bean.ConParameterEnum;
+
 @RestController  
 @RequestMapping("/abc")
 public class EurekaClientController {
@@ -25,6 +28,7 @@ public class EurekaClientController {
     }
       
     @SuppressWarnings("deprecation")
+    @ConParameter(ConParameterEnum.ALL)
 	@RequestMapping(value = "/registered" ,method=RequestMethod.GET)
     public String getRegistered(){
         List<ServiceInstance> list = discoveryClient.getInstances("STORES");  

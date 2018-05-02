@@ -2,7 +2,6 @@ package com.cucund.work.security.annotation.processor;
 
 import java.lang.reflect.Method;
 
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cucund.work.security.annotation.bean.RequestMap;
+import com.alibaba.fastjson.JSONObject;
+import com.cucund.work.security.annotation.ConParameter;
+import com.cucund.work.security.annotation.bean.ConParameterEnum;
+import com.cucund.work.security.annotation.bean.PremissionList;
 import com.cucund.work.security.annotation.provider.Producer;
 
 
@@ -46,8 +48,8 @@ public class AnnotationListenerProcessor implements BeanPostProcessor {
 	 */
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		String name = bean.getClass().getName();
-		if(!(StringUtils.isNotBlank(loadPackage)&&name.contains(loadPackage))){
+		String className = bean.getClass().getName();
+		if(!(StringUtils.isNotBlank(loadPackage)&&className.contains(loadPackage))){
 			return bean;
 		}
 		Controller controller = AnnotationUtils.findAnnotation(bean.getClass(), Controller.class);
@@ -67,64 +69,82 @@ public class AnnotationListenerProcessor implements BeanPostProcessor {
 				clazzPath = getUrl(path);
 			}
 			for (Method method : methods) {
-				RequestMap mapping = null;
+				PremissionList premission = null;
 				RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
 				if (null != requestMapping) {
-					mapping = getMapping(method);
+					premission = getMapping(requestMapping);
 				}
 				GetMapping getMapping = AnnotationUtils.findAnnotation(method, GetMapping.class);
 				if (null != getMapping) {
-					mapping = getMapping4Get(method);
+					premission = getMapping4Get(getMapping);
 				}
 				PostMapping postMapping = AnnotationUtils.findAnnotation(method, PostMapping.class);
 				if (null != postMapping) {
-					mapping = getMapping4Post(method);
+					premission = getMapping4Post(postMapping);
 				}
-				if(null!=mapping){
-					mapping.setClazzName(name);
-					mapping.setClazzPath(clazzPath);
-					mapping.setAppName(appName);
-					producer.sendpRemissionRegister(mapping.toString());
+				if(null!=premission){
+					premission.setPermissionListClass(className);
+					premission.setPermissionListAction(clazzPath+premission.getPermissionListAction());
+					premission.setAppmanageIcode(appName);
+					getConParameterAnnotataion(premission,method);
+					String json = JSONObject.toJSONString(premission);
+					producer.sendpRemissionRegister(json);
 				}
 			}
 		}
 		return bean;
 	}
 
-	private RequestMap getMapping4Post(Method method) {
-		GetMapping result = AnnotationUtils.findAnnotation(method, GetMapping.class);
+	private void getConParameterAnnotataion(PremissionList premission, Method method) {
+		ConParameter result = AnnotationUtils.findAnnotation(method, ConParameter.class);
+		if(null!=result){
+			ConParameterEnum value = result.value();
+			Integer index = value.getIndex();
+			premission.setPermissionListSort(index);
+			Integer authLogin = null;
+			if(result.authLogin() !="" ){
+				authLogin = Integer.valueOf(result.authLogin());
+			}
+			premission.setPermissionListAuthLogin(authLogin);
+		}else{
+			premission.setPermissionListSort(ConParameterEnum.ALL.getIndex());
+			premission.setPermissionListAuthLogin(null);
+		}
+		premission.setPermissionListType(0);
+		premission.setDataState(1);
+	}
+
+	private PremissionList getMapping4Post(PostMapping result) {
 		//插入到数据中
 		String name= result.name();
 		String path= arrayGetString(result.value());
-		RequestMap requestMap = new RequestMap();
-		requestMap.setPath(path);
-		requestMap.setName(name);
-		requestMap.setMethod("GET");
+		PremissionList requestMap = new PremissionList();
+		requestMap.setPermissionListAction(path);
+		requestMap.setPermissionListName(name);
+		requestMap.setPermissionListMethod("GET");
 		return requestMap;
 	}
 
-	private RequestMap getMapping4Get(Method method) {
-		PostMapping result = AnnotationUtils.findAnnotation(method, PostMapping.class);
+	private PremissionList getMapping4Get(GetMapping result) {
 		//插入到数据中
 		String name= result.name();
 		String path= arrayGetString(result.value());
-		RequestMap requestMap = new RequestMap();
-		requestMap.setPath(path);
-		requestMap.setName(name);
-		requestMap.setMethod("POST");
+		PremissionList requestMap = new PremissionList();
+		requestMap.setPermissionListAction(path);
+		requestMap.setPermissionListName(name);
+		requestMap.setPermissionListMethod("POST");
 		return requestMap;
 	}
 
-	private RequestMap getMapping(Method method){
-		RequestMapping result = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+	private PremissionList getMapping(RequestMapping result){
 		//插入到数据中
 		String name= result.name();
 		RequestMethod[] resultRest = result.method();
-		RequestMap requestMap = new RequestMap();
-		requestMap.setPath(getUrl(result.value()));
-		requestMap.setName(name);
+		PremissionList requestMap = new PremissionList();
+		requestMap.setPermissionListAction(getUrl(result.value()));
+		requestMap.setPermissionListName(name);
 		String methodStr = getMethodRest(resultRest);
-		requestMap.setMethod(methodStr);
+		requestMap.setPermissionListMethod(methodStr);
 		return requestMap;
 	}
 

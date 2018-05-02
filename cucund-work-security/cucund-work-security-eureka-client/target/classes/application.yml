@@ -9,4 +9,3 @@ eureka:
         defaultZone: http://server1:9011/eureka/
 app: 
   package: com.cucund.work.security
-  

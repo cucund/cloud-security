@@ -8,15 +8,17 @@ import java.lang.annotation.Target;
 
 import org.springframework.stereotype.Component;
 
+import com.cucund.work.security.annotation.bean.ConParameterEnum;
+
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
 public @interface ConParameter {
 	
-	String value();
+	ConParameterEnum value();
 	
-	String name() default "";
+	String authLogin() default "";
 	
 	String description() default "";
 
