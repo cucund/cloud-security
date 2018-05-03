@@ -16,8 +16,8 @@ import com.cucund.work.security.annotation.provider.Producer;
 public class AnnotationConfig {
 
 	@Bean
-	public Queue premissionRegister() {
-		return new ActiveMQQueue("premission.register.queue");
+	public Queue permissionRegister() {
+		return new ActiveMQQueue("permission.register.queue");
 	}
 	
 	@Bean

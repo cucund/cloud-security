@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: cucund-work-security-annotation
 Implementation-Version: 1.0.0
-Built-By: Xu
+Built-By: Administrator
 Implementation-Vendor-Id: com.cucund
 Build-Jdk: 1.8.0_112
 Implementation-URL: http://projects.spring.io/spring-boot/security/cuc

@@ -25,7 +25,6 @@
 		<dependency>
 			<groupId>com.cucund</groupId>
 			<artifactId>cucund-work-security-annotation</artifactId>
-			<version>1.0.0</version>
 		</dependency>
   </dependencies>
 

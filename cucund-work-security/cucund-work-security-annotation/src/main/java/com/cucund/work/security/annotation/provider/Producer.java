@@ -1,5 +1,6 @@
 package com.cucund.work.security.annotation.provider;
 
+import javax.jms.JMSException;
 import javax.jms.Queue;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +9,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSONObject;
+import com.cucund.work.security.amq.config.VersionProtocol;
+
 @Component
 public class Producer implements CommandLineRunner {
 	@Autowired
 	private JmsMessagingTemplate jmsMessagingTemplate;
 	
 	@Autowired
-	private Queue premissionRegister;
+	private Queue permissionRegister;
 	
 	@Autowired
 	private Queue startTest;
@@ -22,8 +26,10 @@ public class Producer implements CommandLineRunner {
 	@Value("${spring.application.name}")
 	private String appName;
 	
-	public void sendpRemissionRegister(String msg){
-		this.jmsMessagingTemplate.convertAndSend(this.premissionRegister,msg);
+	public void sendPermissionRegister(VersionProtocol protocol) throws JMSException{
+		protocol.setQueueName(this.permissionRegister.getQueueName());
+		String msg = JSONObject.toJSONString(protocol);
+		this.jmsMessagingTemplate.convertAndSend(this.permissionRegister,msg);
 	}
 	
 	public void sendStartTest(String msg){

@@ -16,7 +16,6 @@
 		<dependency>
 			<groupId>com.cucund</groupId>
 			<artifactId>cucund-work-security-amq</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 </project>

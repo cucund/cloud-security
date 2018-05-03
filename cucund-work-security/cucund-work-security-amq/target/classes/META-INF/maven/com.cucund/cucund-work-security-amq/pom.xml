@@ -12,5 +12,9 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-activemq</artifactId>
 	  </dependency>
+	  <dependency>
+	  	<groupId>com.cucund</groupId>
+	  	<artifactId>cucund-work-security-common</artifactId>
+	  </dependency>
   </dependencies>
 </project>

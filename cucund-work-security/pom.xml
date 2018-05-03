@@ -23,9 +23,10 @@
 		<module>cucund-work-security-amq</module>
 		<module>cucund-work-security-ribbon</module>
 		<module>cucund-work-security-eureka-client</module>
-		<module>cucund-work-security-premission</module>
+		<module>cucund-work-security-permission</module>
 		<module>cucund-work-security-common</module>
 		<module>cucund-work-security-plugin</module>
+		<module>cucund-work-security-mybatis</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,6 +36,14 @@
 		<druid-starter.version>1.1.6</druid-starter.version>
 		<swagger2.version>2.8.0</swagger2.version>
 		<lombok.version>1.16.20</lombok.version>
+		<fastjson.version>1.2.40</fastjson.version>
+		<mybatis-spring-boot.version>1.3.0</mybatis-spring-boot.version>
+		<pagehelper.version>1.2.1</pagehelper.version>
+		<tk.mybatis.version>2.0.0</tk.mybatis.version>
+		<mybatis-generator.version>1.3.2</mybatis-generator.version>
+		<cucund.version>1.0.0</cucund.version>
+		<commons-lang3.version>3.1</commons-lang3.version>
+		<druid.version>1.0.29</druid.version>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -52,15 +61,37 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.40</version>
-		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
+			<!-- cucund -->
+			<dependency>
+				<groupId>com.cucund</groupId>
+				<artifactId>cucund-work-security-amq</artifactId>
+				<version>${cucund.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.cucund</groupId>
+				<artifactId>cucund-work-security-annotation</artifactId>
+				<version>${cucund.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.cucund</groupId>
+				<artifactId>cucund-work-security-plugin</artifactId>
+				<version>${cucund.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.cucund</groupId>
+				<artifactId>cucund-work-security-mybatis</artifactId>
+				<version>${cucund.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.cucund</groupId>
+				<artifactId>cucund-work-security-common</artifactId>
+				<version>${cucund.version}</version>
+			</dependency>
+			<!-- spring -->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -77,6 +108,12 @@
 				<groupId>com.alibaba</groupId>
 				<artifactId>druid-spring-boot-starter</artifactId>
 				<version>${druid-starter.version}</version>
+			</dependency>
+			<!-- druid -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${druid.version}</version>
 			</dependency>
 			<!--swagger ui -->
 			<dependency>
@@ -105,6 +142,44 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-starter-hystrix</artifactId>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>${fastjson.version}</version>
+			</dependency>
+			<!-- mybatis -->
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${mybatis-spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>tk.mybatis</groupId>
+				<artifactId>mapper-spring-boot-starter</artifactId>
+				<version>${tk.mybatis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.pagehelper</groupId>
+				<artifactId>pagehelper-spring-boot-starter</artifactId>
+				<version>${pagehelper.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.pagehelper</groupId>
+				<artifactId>pagehelper-spring-boot-starter</artifactId>
+				<version>${pagehelper.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>${mybatis-generator.version}</version>
+			</dependency>
+			<!-- 其他 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

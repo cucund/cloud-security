@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.cucund.work.security.annotation.ConParameter;
+import com.cucund.work.security.annotation.bean.ConParameterEnum;
 
 @RestController
 @RequestMapping("/client")
@@ -25,7 +26,7 @@ public class ClientController {
     
     @RequestMapping(value = "/registered")
     @ResponseBody
-    @ConParameter("")
+    @ConParameter(ConParameterEnum.ALL)
     public String registered(@RequestParam String msg){
     	return restTemplate.getForObject("http://CLIENT-SERVER/abc/registered",String.class);
     }

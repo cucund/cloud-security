@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PAGINATION">
+  <sql id="MYSQL_paginationStart">
+  </sql>
+  <sql id="MYSQL_paginationEnd"> 
+      <if test="rows != null and startRow != null">
+           limit #{startRow},#{rows}
+       </if>
+  </sql>
+  <sql id="MYSQL_selectSysDate" >
+    select SYSDATE()
+  </sql>
+</mapper>

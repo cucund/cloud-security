@@ -2,6 +2,8 @@ package com.cucund.work.security.annotation.processor;
 
 import java.lang.reflect.Method;
 
+import javax.jms.JMSException;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cucund.work.security.amq.config.VersionProtocol;
 import com.cucund.work.security.annotation.ConParameter;
 import com.cucund.work.security.annotation.bean.ConParameterEnum;
-import com.cucund.work.security.annotation.bean.PremissionList;
+import com.cucund.work.security.annotation.bean.PermissionList;
 import com.cucund.work.security.annotation.provider.Producer;
 
 
@@ -69,78 +72,91 @@ public class AnnotationListenerProcessor implements BeanPostProcessor {
 				clazzPath = getUrl(path);
 			}
 			for (Method method : methods) {
-				PremissionList premission = null;
+				PermissionList permission = null;
 				RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
 				if (null != requestMapping) {
-					premission = getMapping(requestMapping);
+					permission = getMapping(requestMapping);
 				}
 				GetMapping getMapping = AnnotationUtils.findAnnotation(method, GetMapping.class);
 				if (null != getMapping) {
-					premission = getMapping4Get(getMapping);
+					permission = getMapping4Get(getMapping);
 				}
 				PostMapping postMapping = AnnotationUtils.findAnnotation(method, PostMapping.class);
 				if (null != postMapping) {
-					premission = getMapping4Post(postMapping);
+					permission = getMapping4Post(postMapping);
 				}
-				if(null!=premission){
-					premission.setPermissionListClass(className);
-					premission.setPermissionListAction(clazzPath+premission.getPermissionListAction());
-					premission.setAppmanageIcode(appName);
-					getConParameterAnnotataion(premission,method);
-					String json = JSONObject.toJSONString(premission);
-					producer.sendpRemissionRegister(json);
+				if(null!=permission){
+					permission.setPermissionListClass(className);
+					permission.setPermissionListAction(clazzPath+permission.getPermissionListAction());
+					permission.setAppmanageIcode(appName);
+					getConParameterAnnotataion(permission,method);
+					//初始化协议
+					String json = JSONObject.toJSONString(permission);
+					VersionProtocol protocol = new VersionProtocol();
+					protocol.setAppKey(appName);
+					protocol.setClassName(className);
+					protocol.setMsgBody(json);
+					try {
+						producer.sendPermissionRegister(protocol);
+					} catch (JMSException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
 		return bean;
 	}
-
-	private void getConParameterAnnotataion(PremissionList premission, Method method) {
+	/**
+	 * 根据自定义的注释取出里面的数据,更新permission
+	 * @param permission
+	 * @param method
+	 */
+	private void getConParameterAnnotataion(PermissionList permission, Method method) {
 		ConParameter result = AnnotationUtils.findAnnotation(method, ConParameter.class);
 		if(null!=result){
 			ConParameterEnum value = result.value();
 			Integer index = value.getIndex();
-			premission.setPermissionListSort(index);
+			permission.setPermissionListSort(index);
 			Integer authLogin = null;
-			if(result.authLogin() !="" ){
+			if(!result.authLogin().equals("") ){
 				authLogin = Integer.valueOf(result.authLogin());
 			}
-			premission.setPermissionListAuthLogin(authLogin);
+			permission.setPermissionListAuthLogin(authLogin);
 		}else{
-			premission.setPermissionListSort(ConParameterEnum.ALL.getIndex());
-			premission.setPermissionListAuthLogin(null);
+			permission.setPermissionListSort(ConParameterEnum.ALL.getIndex());
+			permission.setPermissionListAuthLogin(null);
 		}
-		premission.setPermissionListType(0);
-		premission.setDataState(1);
+		permission.setPermissionListType(0);
+		permission.setDataState(1);
 	}
 
-	private PremissionList getMapping4Post(PostMapping result) {
+	private PermissionList getMapping4Post(PostMapping result) {
 		//插入到数据中
 		String name= result.name();
 		String path= arrayGetString(result.value());
-		PremissionList requestMap = new PremissionList();
+		PermissionList requestMap = new PermissionList();
 		requestMap.setPermissionListAction(path);
 		requestMap.setPermissionListName(name);
 		requestMap.setPermissionListMethod("GET");
 		return requestMap;
 	}
 
-	private PremissionList getMapping4Get(GetMapping result) {
+	private PermissionList getMapping4Get(GetMapping result) {
 		//插入到数据中
 		String name= result.name();
 		String path= arrayGetString(result.value());
-		PremissionList requestMap = new PremissionList();
+		PermissionList requestMap = new PermissionList();
 		requestMap.setPermissionListAction(path);
 		requestMap.setPermissionListName(name);
 		requestMap.setPermissionListMethod("POST");
 		return requestMap;
 	}
 
-	private PremissionList getMapping(RequestMapping result){
+	private PermissionList getMapping(RequestMapping result){
 		//插入到数据中
 		String name= result.name();
 		RequestMethod[] resultRest = result.method();
-		PremissionList requestMap = new PremissionList();
+		PermissionList requestMap = new PermissionList();
 		requestMap.setPermissionListAction(getUrl(result.value()));
 		requestMap.setPermissionListName(name);
 		String methodStr = getMethodRest(resultRest);
