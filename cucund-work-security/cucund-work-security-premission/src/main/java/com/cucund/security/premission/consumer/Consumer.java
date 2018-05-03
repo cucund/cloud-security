@@ -17,7 +17,9 @@ public class Consumer {
 	@JmsListener(destination = "premission.register.queue")
 	public void offlineReceive(String msg){
 		PremissionList premission = JSONObject.parseObject(msg, PremissionList.class);
-		System.out.println("premission.register.queue Msg 接受成功!! 内容:"+premission.toString()  );
+		System.out.println("premission.register.queue Msg 接受成功!! 内容:"+premission.toString());
+		//先去数据库查询是否存在当前action
+
 	}
 	
 	@JmsListener(destination = "start.test.queue")

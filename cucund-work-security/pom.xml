@@ -25,6 +25,7 @@
 		<module>cucund-work-security-eureka-client</module>
 		<module>cucund-work-security-premission</module>
 		<module>cucund-work-security-common</module>
+		<module>cucund-work-security-plugin</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

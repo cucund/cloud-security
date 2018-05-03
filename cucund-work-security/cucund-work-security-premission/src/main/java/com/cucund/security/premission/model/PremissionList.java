@@ -2,50 +2,98 @@ package com.cucund.security.premission.model;
 
 import java.util.Date;
 
-import com.cucund.security.premission.domain.BaseDomain;
-
-
-public class PremissionList extends BaseDomain{
+public class PremissionList {
     private Integer permissionListId;
 
+    /**
+     * 代码
+     */
     private String permissionListCode;
 
+    /**
+     * 系统权限代码
+     */
     private String permissionCode;
 
+    /**
+     * app code
+     */
     private String appmanageIcode;
 
     private String permissionListClass;
 
+    /**
+     * action
+     */
     private String permissionListAction;
 
+    /**
+     * method
+     */
     private String permissionListMethod;
 
+    /**
+     * 类别： 0：操作员权限判断    1：判断是否登陆(SYSPOP_CODE=-2) 2：公共权限不用判断(SYSPOP_CODE=-1)             
+     */
     private Integer permissionListSort;
 
+    /**
+     * 类型 ： 0：正常 
+     */
     private Integer permissionListType;
 
+    /**
+     * 功能名称
+     */
     private String permissionListName;
 
+    /**
+     * 标志 ： 0：不记录 1 记录
+     */
     private Integer permissionLogStart;
 
+    /**
+     * 标志 ： 0：不记录 1 记录
+     */
     private Integer permissionLogEnd;
 
+    /**
+     * 业务号码解析 a.b.c
+     */
     private String permissionLogSno;
 
+    /**
+     * 业务号码解析 a.b.c
+     */
     private String permissionLogNno;
 
+    /**
+     * 创建时间
+     */
     private Date gmtCreate;
 
+    /**
+     * 修改时间
+     */
     private Date gmtModified;
 
+    /**
+     * 备注
+     */
     private String memo;
 
+    /**
+     * 状态
+     */
     private Integer dataState;
 
     private Integer permissionListFlag;
 
     private String tenantCode;
 
+    /**
+     * 是否需要缓存
+     */
     private Integer permissionListCache;
 
     private Integer permissionListAuthLogin;

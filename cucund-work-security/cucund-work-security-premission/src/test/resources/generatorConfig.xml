@@ -3,6 +3,19 @@
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 	<context id="MysqlTables" targetRuntime="MyBatis3" defaultModelType="flat">
+	<plugin type="com.cucund.security.common.plugin.ColumnRemarkPlugin"></plugin>
+		<plugin type="com.cucund.security.common.plugin.FuzzyPageableQueryPlugin">
+		    <property name="isFuzzy" value="true"></property>
+		</plugin>
+		<plugin type="com.cucund.security.common.plugin.DomainClassPlugin">
+		    <property name="tableNames" value="premission_list"></property><!--需要生成Domain的表名,多个表用逗号分隔-->
+	        <property name="defaultPackage" value="com.cucund.security.premission"></property><!--默认的包名-->
+	        <property name="outputDir" value="src\main\java"></property><!--输出路径-->
+	        <property name="defaultExcludeFields" value="memo,dataState,gmtModified,gmtCreate"/><!--不需要生成到domain中的属性名-->
+	        <property name="rootClass" value="BaseDomain"/><!--默认继承的父类-->
+	        <property name="rootInterface" value="Serializable"/><!--默认实现的接口-->
+	        <property name="imports" value="java.io.Serializable"/>
+		</plugin>
 		<commentGenerator>
 			<property name="suppressAllComments" value="true" />
 		</commentGenerator>
@@ -35,8 +48,6 @@
 	        <property name="domainClass.subpackage" value="domain" /><!--相对于package的子包-->
 	        <property name="domainClass.domainExcludeFields" value="memo,dataState,gmtModified,gmtCreate" /><!--不需要生成的属性名-->
 	        <property name="domainClass.rootClass" value="BaseDomain" /><!--继承的父类，覆盖默认的父类-->
-	        <property name="rootInterface" value="Serializable"/><!--默认实现的接口-->
-	        <property name="imports" value="java.io.Serializable"/>
 	       <!--  <property name="status1.type" value="enum:" /> --><!--status属性的类型，该属性为空，那么类型为DO对象中该属性的类型。该属性为enums:为枚举，将自动生成枚举类，枚举类的类名为enums:后面的字符串，如果没有默认为属性名+Kind-->
 	       <!--  <property name="status1.enumDef" value="code:msg:name,INIT:I:初始化:init,SUCCESS:S:成功:success"/> --><!--枚举类型定义,逗号分隔作为列分隔符，第一列为属性名称，后面每一列是属性的定义,分号作为枚举类中属性的分隔-->
 		</table>
