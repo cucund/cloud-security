@@ -1,5 +1,0 @@
-com\cucund\work\security\amq\provider\Producer.class
-com\cucund\work\security\amq\controller\TestActiveMqController.class
-com\cucund\work\security\amq\config\ActiveMqConfig.class
-com\cucund\work\security\amq\consumer\Constomer.class
-com\cucund\work\security\amq\RegisterApplication.class
