@@ -6,18 +6,16 @@
 		<artifactId>security</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>cucund-work-security-eureka-client</artifactId>
-	<name>cucund-work-security-eureka-client</name>
+	<artifactId>cucund-work-security-eureka-config</artifactId>
 	<build />
 	<dependencies>
 		<dependency>
-			<groupId>com.cucund</groupId>
-			<artifactId>cucund-work-security-annotation</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.cucund</groupId>
-			<artifactId>cucund-work-security-eureka-config</artifactId>
-			<version>1.0.0</version>
+			<artifactId>cucund-work-security-common</artifactId>
 		</dependency>
 	</dependencies>
 </project>

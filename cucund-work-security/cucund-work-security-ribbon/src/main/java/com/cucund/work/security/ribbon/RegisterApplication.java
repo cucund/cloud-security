@@ -9,10 +9,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.client.RestTemplate;
 
 import com.cucund.work.security.annotation.config.AnnotationConfig;
+import com.cucund.work.security.eureka.comfig.EurekaConfig;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@Import(value={AnnotationConfig.class})
+@Import(value={AnnotationConfig.class,EurekaConfig.class})
 public class RegisterApplication {
 
 	public static void main(String[] args) {

@@ -29,5 +29,9 @@
 			<groupId>com.cucund</groupId>
 			<artifactId>cucund-work-security-amq</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.cucund</groupId>
+			<artifactId>cucund-work-security-eureka-config</artifactId>
+		</dependency>
 	</dependencies>
 </project>

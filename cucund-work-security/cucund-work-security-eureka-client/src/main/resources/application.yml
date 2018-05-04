@@ -3,9 +3,5 @@ server:
 spring:
   application:
     name: client-server
-eureka:
-  client:
-      service-url:
-        defaultZone: http://server1:9011/eureka/
 app: 
   package: com.cucund.work.security

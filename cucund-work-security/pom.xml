@@ -27,6 +27,7 @@
 		<module>cucund-work-security-common</module>
 		<module>cucund-work-security-plugin</module>
 		<module>cucund-work-security-mybatis</module>
+		<module>cucund-work-security-eureka-config</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,6 +66,11 @@
 	<dependencyManagement>
 		<dependencies>
 			<!-- cucund -->
+			<dependency>
+				<groupId>com.cucund</groupId>
+				<artifactId>cucund-work-security-eureka-config</artifactId>
+				<version>${cucund.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.cucund</groupId>
 				<artifactId>cucund-work-security-amq</artifactId>
