@@ -9,12 +9,22 @@ import org.springframework.context.annotation.Import;
 
 import com.cucund.work.security.amq.config.ActiveMqConfig;
 import com.cucund.work.security.annotation.processor.AnnotationListenerProcessor;
+import com.cucund.work.security.annotation.processor.ServerConfig;
 import com.cucund.work.security.annotation.provider.Producer;
 
 @Configuration
 @Import(ActiveMqConfig.class)
 public class AnnotationConfig {
 
+	@Bean
+	public Queue gatewayApiRegister() {
+		return new ActiveMQQueue("gatewayApi.register.queue");
+	}
+	@Bean
+	public Queue gatewayApiOffline() {
+		return new ActiveMQQueue("gatewayApi.offline.queue");
+	}
+	
 	@Bean
 	public Queue permissionRegister() {
 		return new ActiveMQQueue("permission.register.queue");
@@ -33,6 +43,11 @@ public class AnnotationConfig {
 	@Bean
 	public AnnotationListenerProcessor AnnotationListenerProcessor(){
 		return new AnnotationListenerProcessor();
+	}
+	
+	@Bean
+	public ServerConfig serverConfig(){
+		return new ServerConfig();
 	}
 	
 }

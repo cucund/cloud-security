@@ -28,6 +28,7 @@
 		<module>cucund-work-security-plugin</module>
 		<module>cucund-work-security-mybatis</module>
 		<module>cucund-work-security-eureka-config</module>
+		<module>cucund-work-security-zuul</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

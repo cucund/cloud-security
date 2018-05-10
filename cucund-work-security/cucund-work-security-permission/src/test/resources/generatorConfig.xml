@@ -8,7 +8,7 @@
 		    <property name="isFuzzy" value="true"></property>
 		</plugin>
 		<plugin type="com.cucund.security.common.plugin.DomainClassPlugin">
-		    <property name="tableNames" value="permission_list"></property><!--需要生成Domain的表名,多个表用逗号分隔-->
+		    <property name="tableNames" value="gateway_api_define"></property><!--需要生成Domain的表名,多个表用逗号分隔-->
 	        <property name="defaultPackage" value="com.cucund.security.permission"></property><!--默认的包名-->
 	        <property name="outputDir" value="src\main\java"></property><!--输出路径-->
 	        <property name="defaultExcludeFields" value="memo,dataState,gmtModified,gmtCreate"/><!--不需要生成到domain中的属性名-->
@@ -37,13 +37,13 @@
 			targetPackage="com.cucund.security.permission.dao" targetProject="src\main\java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
-		<table schema="permission" tableName="permission_list"
-			domainObjectName="PermissionList" enableCountByExample="false"
+		<table schema="permission" tableName="gateway_api_define"
+			domainObjectName="GatewayApiDefine" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 			<property name="useActualColumnNames" value="false" />
-	        <property name="domainClass.className" value="PermissionListDomain" /><!--Domain类名，如果不定义将使用DO对象的类名+Domain-->
-			<property name="codeColumn" value="PERMISSION_LIST_CODE" />
+	        <property name="domainClass.className" value="GatewayApiDefineDomain" /><!--Domain类名，如果不定义将使用DO对象的类名+Domain-->
+			<!-- <property name="codeColumn" value="PERMISSION_LIST_CODE" /> -->
 			<property name="domainClass.package" value="com.cucund.security.permission" /><!--这个表对应的domain类的包，会覆盖默认包-->
 	        <property name="domainClass.subpackage" value="domain" /><!--相对于package的子包-->
 	        <property name="domainClass.domainExcludeFields" value="memo,dataState,gmtModified,gmtCreate" /><!--不需要生成的属性名-->

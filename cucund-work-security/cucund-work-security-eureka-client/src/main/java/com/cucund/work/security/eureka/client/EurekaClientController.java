@@ -18,7 +18,7 @@ import com.cucund.work.security.annotation.bean.ConParameterEnum;
 public class EurekaClientController {
 
 	
-	@Autowired  
+	@Autowired
     private DiscoveryClient discoveryClient;  
       
     @RequestMapping("/")
@@ -34,7 +34,6 @@ public class EurekaClientController {
         List<ServiceInstance> list = discoveryClient.getInstances("STORES");  
         System.out.println(discoveryClient.getLocalServiceInstance());  
         System.out.println("discoveryClient.getServices().size() = " + discoveryClient.getServices().size());  
-          
         for( String s :  discoveryClient.getServices()){
             System.out.println("services " + s);
             List<ServiceInstance> serviceInstances =  discoveryClient.getInstances(s);  

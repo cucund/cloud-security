@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
+@Repository
 @Mapper
-public interface PermissionListMapper extends BaseSupportDao{
+public interface PermissionListMapper extends BaseSupportDao {
     int deleteByPrimaryKey(Integer permissionListId);
 
     int insert(PermissionList record);

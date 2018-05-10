@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cucund.security.permission.dao.GatewayApiDefineMapper" >
+  <resultMap id="BaseResultMap" type="com.cucund.security.permission.model.GatewayApiDefine" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="service_id" property="serviceId" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="retryable" property="retryable" jdbcType="BIT" />
+    <result column="data_state" property="dataState" jdbcType="INTEGER" />
+    <result column="strip_prefix" property="stripPrefix" jdbcType="INTEGER" />
+    <result column="api_name" property="apiName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, path, service_id, url, retryable, data_state, strip_prefix, api_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from gateway_api_define
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from gateway_api_define
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cucund.security.permission.model.GatewayApiDefine" >
+    insert into gateway_api_define (id, path, service_id, 
+      url, retryable, data_state, 
+      strip_prefix, api_name)
+    values (#{id,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, #{serviceId,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{retryable,jdbcType=BIT}, #{dataState,jdbcType=INTEGER}, 
+      #{stripPrefix,jdbcType=INTEGER}, #{apiName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cucund.security.permission.model.GatewayApiDefine" >
+    insert into gateway_api_define
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="serviceId != null" >
+        service_id,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="retryable != null" >
+        retryable,
+      </if>
+      <if test="dataState != null" >
+        data_state,
+      </if>
+      <if test="stripPrefix != null" >
+        strip_prefix,
+      </if>
+      <if test="apiName != null" >
+        api_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceId != null" >
+        #{serviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="retryable != null" >
+        #{retryable,jdbcType=BIT},
+      </if>
+      <if test="dataState != null" >
+        #{dataState,jdbcType=INTEGER},
+      </if>
+      <if test="stripPrefix != null" >
+        #{stripPrefix,jdbcType=INTEGER},
+      </if>
+      <if test="apiName != null" >
+        #{apiName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cucund.security.permission.model.GatewayApiDefine" >
+    update gateway_api_define
+    <set >
+    	<if test="id != null" >
+        id = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="retryable != null" >
+        retryable = #{retryable,jdbcType=BIT},
+      </if>
+      <if test="dataState != null" >
+        data_state = #{dataState,jdbcType=INTEGER},
+      </if>
+      <if test="stripPrefix != null" >
+        strip_prefix = #{stripPrefix,jdbcType=INTEGER},
+      </if>
+      <if test="apiName != null" >
+        api_name = #{apiName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where service_Id = #{serviceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cucund.security.permission.model.GatewayApiDefine" >
+    update gateway_api_define
+    set path = #{path,jdbcType=VARCHAR},
+      service_id = #{serviceId,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      retryable = #{retryable,jdbcType=BIT},
+      data_state = #{dataState,jdbcType=INTEGER},
+      strip_prefix = #{stripPrefix,jdbcType=INTEGER},
+      api_name = #{apiName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <sql id="gateway_api_define_query_fuzzy_condition" >
+    <trim prefix="WHERE" prefixOverrides="AND |OR " >
+      <if test="path != null and path.trim().length() != 0" >
+         AND (path like concat('%',#{path},'%')) 
+      </if>
+      <if test="serviceId != null and serviceId.trim().length() != 0" >
+         AND (service_id like concat('%',#{serviceId},'%')) 
+      </if>
+      <if test="url != null and url.trim().length() != 0" >
+         AND (url like concat('%',#{url},'%')) 
+      </if>
+      <if test="retryable != null" >
+        AND (retryable = #{retryable})
+      </if>
+      <if test="dataState != null" >
+        AND (data_state = #{dataState})
+      </if>
+      <if test="stripPrefix != null" >
+        AND (strip_prefix = #{stripPrefix})
+      </if>
+      <if test="apiName != null and apiName.trim().length() != 0" >
+         AND (api_name like concat('%',#{apiName},'%')) 
+      </if>
+    </trim>
+  </sql>
+  <sql id="gateway_api_define_query_condition" >
+    <trim prefix="WHERE" prefixOverrides="AND |OR " >
+      <if test="path != null and path.trim().length() != 0" >
+        AND (path = #{path})
+      </if>
+      <if test="serviceId != null and serviceId.trim().length() != 0" >
+        AND (service_id = #{serviceId})
+      </if>
+      <if test="url != null and url.trim().length() != 0" >
+        AND (url = #{url})
+      </if>
+      <if test="retryable != null" >
+        AND (retryable = #{retryable})
+      </if>
+      <if test="dataState != null" >
+        AND (data_state = #{dataState})
+      </if>
+      <if test="stripPrefix != null" >
+        AND (strip_prefix = #{stripPrefix})
+      </if>
+      <if test="apiName != null and apiName.trim().length() != 0" >
+        AND (api_name = #{apiName})
+      </if>
+    </trim>
+  </sql>
+  <select id="query" resultMap="BaseResultMap" >
+    <include refid="PAGINATION.MYSQL_paginationStart" />
+    select 
+    <include refid="Base_Column_List" />
+     from gateway_api_define 
+    <if test="fuzzy" >
+      <include refid="gateway_api_define_query_fuzzy_condition" />
+    </if>
+    <if test="!fuzzy" >
+      <include refid="gateway_api_define_query_condition" />
+    </if>
+    <if test="order and orderStr == null" >
+      order by GMT_CREATE desc
+    </if>
+    <if test="order and orderStr != null and orderStr.trim().length() != 0" >
+      order by ${orderStr}
+    </if>
+    <include refid="PAGINATION.MYSQL_paginationEnd" />
+  </select>
+  <insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List" >
+    insert into gateway_api_define ( 
+    id,path,service_id,url,retryable,data_state,strip_prefix,api_name ) values 
+    <foreach collection="list" item="item" index="index" separator="," >
+       ( #{item.id,jdbcType=VARCHAR},#{item.path,jdbcType=VARCHAR},#{item.serviceId,jdbcType=VARCHAR},#{item.url,jdbcType=VARCHAR},#{item.retryable,jdbcType=BIT},#{item.dataState,jdbcType=INTEGER},#{item.stripPrefix,jdbcType=INTEGER},#{item.apiName,jdbcType=VARCHAR} ) 
+    </foreach>
+  </insert>
+  <select id="count" resultType="int" >
+    select count(*) from gateway_api_define 
+    <if test="fuzzy" >
+      <include refid="gateway_api_define_query_fuzzy_condition" />
+    </if>
+    <if test="!fuzzy" >
+      <include refid="gateway_api_define_query_condition" />
+    </if>
+  </select>
+  <select id="selectSysDate" resultType="java.util.Date" >
+    <include refid="PAGINATION.MYSQL_selectSysDate" />
+  </select>
+  <update id="updateStateByPrimaryKey" parameterType="Map" >
+    update gateway_api_define 
+     set DATA_STATE = #{dataState,jdbcType=INTEGER},GMT_MODIFIED=SYSDATE() 
+    <if test="memo != null" >
+       , MEMO = #{memo,jdbcType=VARCHAR} 
+    </if>
+    where  id = #{id,jdbcType=VARCHAR}
+    <if test="oldDataState != null" >
+       and DATA_STATE = #{oldDataState,jdbcType=INTEGER} 
+    </if>
+  </update>
+</mapper>

@@ -1,0 +1,18 @@
+server:
+  port: 8769
+spring:
+  application:
+    name: service-zuul
+  datasource: 
+    url: jdbc:log4jdbc:mysql://127.0.0.1:3306/permission?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+logging: 
+  level: 
+    jdbc: 
+      sqltiming: INFO
+      sqlonly: OFF
+      audit: OFF
+      resultset: OFF
+      connection: OFF

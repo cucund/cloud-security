@@ -19,11 +19,11 @@ public class PermissionListServiceImpl implements PermissionListService{
 	PermissionListMapper permissionListMapper;
 	
 	
-	
 	@Override
 	public void savePermissionList(PermissionList permissionList) {
 		permissionListMapper.insertSelective(permissionList);
 	}
+	
 	@Override
 	public PermissionList query(Map<String,Object> map){
 		List<PermissionList> list = permissionListMapper.query(map);
