@@ -502,4 +502,7 @@
        and TENANT_CODE = #{tenantCode,jdbcType=VARCHAR} 
     </if>
   </delete>
+  <select id="getMaxCode" resultType="int" >
+  	select MAX(PERMISSION_LIST_CODE+0) from permission_list
+  </select>
 </mapper>

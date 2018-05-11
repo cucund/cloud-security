@@ -17,48 +17,26 @@ public class Producer implements CommandLineRunner {
 	@Autowired
 	private JmsMessagingTemplate jmsMessagingTemplate;
 	
-	@Autowired
-	private Queue permissionRegister;
-	
-	@Autowired
-	private Queue startTest;
-	
-	@Autowired
-	private Queue gatewayApiRegister;
-	
-	@Autowired
-	private Queue gatewayApiOffline;
-	
 	@Value("${spring.application.name}")
 	private String appName;
 	
-	public void sendPermissionRegister(VersionProtocol protocol) throws JMSException{
-		protocol.setQueueName(this.permissionRegister.getQueueName());
+	public void sendMQMessage(VersionProtocol protocol) throws JMSException {
+		protocol.setAppKey(appName);
+		String queueName = protocol.getQueueName();
+		if(queueName==null){
+			new JMSException("501", "send JMS Message Error,No channel name is set");
+		}
+		Queue queue = ProducerManager.getQueue(queueName);
 		String msg = JSONObject.toJSONString(protocol);
-		this.jmsMessagingTemplate.convertAndSend(this.permissionRegister,msg);
-	}
-	
-	public void sendGatewayApiRegister(VersionProtocol protocol) throws JMSException{
-		protocol.setQueueName(this.gatewayApiRegister.getQueueName());
-		String msg = JSONObject.toJSONString(protocol);
-		this.jmsMessagingTemplate.convertAndSend(this.gatewayApiRegister,msg);
-	}
-	
-	public void sendGatewayApiOffline(VersionProtocol protocol) throws JMSException {
-		protocol.setQueueName(this.gatewayApiOffline.getQueueName());
-		String msg = JSONObject.toJSONString(protocol);
-		this.jmsMessagingTemplate.convertAndSend(this.gatewayApiOffline,msg);
+		this.jmsMessagingTemplate.convertAndSend(queue,msg);
 	}
 
 	/**
 	 * 项目启动时   测试队列是否正常方法
 	 */
 	public void run(String... strings) throws Exception {
-		sendStartTest("启动测试  APP:"+appName+"!!提供方发出");
-	}
-	
-	public void sendStartTest(String msg){
-		this.jmsMessagingTemplate.convertAndSend(this.startTest,msg);
+		Queue queue = ProducerManager.getQueue("start.test.queue");
+		this.jmsMessagingTemplate.convertAndSend(queue,"启动测试  APP:"+appName+"!!提供方发出");
 	}
 	
 }

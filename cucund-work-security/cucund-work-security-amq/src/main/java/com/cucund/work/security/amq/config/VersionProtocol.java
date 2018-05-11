@@ -78,6 +78,14 @@ public class VersionProtocol {
 		this.msgBody = msgBody;
 	}
 
+	public VersionProtocol() {
+		
+	}
+
+	public VersionProtocol(String queueName) {
+		this.queueName = queueName;
+	}
+
 
 	
 }

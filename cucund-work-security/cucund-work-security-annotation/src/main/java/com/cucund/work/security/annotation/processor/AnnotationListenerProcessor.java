@@ -26,7 +26,10 @@ import com.cucund.work.security.annotation.bean.ConParameterEnum;
 import com.cucund.work.security.annotation.bean.PermissionList;
 import com.cucund.work.security.annotation.provider.Producer;
 
-
+/**
+ * 监听注解启动
+ * @author cucund
+ */
 @Component
 public class AnnotationListenerProcessor implements BeanPostProcessor {
 	
@@ -56,48 +59,47 @@ public class AnnotationListenerProcessor implements BeanPostProcessor {
 			return bean;
 		}
 		Controller controller = AnnotationUtils.findAnnotation(bean.getClass(), Controller.class);
-		if(null ==controller){
+		if(null ==controller){//类上是否被注解Controller 修饰
 			return bean;
 		}
 		RestController restController = AnnotationUtils.findAnnotation(bean.getClass(), RestController.class);
-		if(null ==restController){
+		if(null ==restController){//类上是否被注解RestController 修饰
 			return bean;
 		}
 		Method[] methods = ReflectionUtils.getAllDeclaredMethods(bean.getClass());
 		if (methods != null) {
 			RequestMapping classAnnotation = AnnotationUtils.findAnnotation(bean.getClass(), RequestMapping.class);
 			String clazzPath = "";
-			if(null!=classAnnotation){
+			if(null!=classAnnotation){//类上是否被注解RequestMapping 修饰
 				String[] path = classAnnotation.value();
 				clazzPath = getUrl(path);
 			}
 			for (Method method : methods) {
 				PermissionList permission = null;
 				RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-				if (null != requestMapping) {
+				if (null != requestMapping) {//方法上是否被注解RequestMapping 修饰
 					permission = getMapping(requestMapping);
 				}
 				GetMapping getMapping = AnnotationUtils.findAnnotation(method, GetMapping.class);
-				if (null != getMapping) {
+				if (null != getMapping) {//方法上是否被注解GetMapping 修饰
 					permission = getMapping4Get(getMapping);
 				}
 				PostMapping postMapping = AnnotationUtils.findAnnotation(method, PostMapping.class);
-				if (null != postMapping) {
+				if (null != postMapping) {//方法上是否被注解PostMapping 修饰
 					permission = getMapping4Post(postMapping);
 				}
-				if(null!=permission){
+				if(null!=permission){//获得的内容是否为空   ,其他rest风格请自行添加
 					permission.setPermissionListClass(className);
 					permission.setPermissionListAction(clazzPath+permission.getPermissionListAction());
 					permission.setAppmanageIcode(appName);
-					getConParameterAnnotataion(permission,method);
+					getConParameterAnnotataion(permission,method);//获取当前方法下是否有ConParameter注解
 					//初始化协议
 					String json = JSONObject.toJSONString(permission);
-					VersionProtocol protocol = new VersionProtocol();
-					protocol.setAppKey(appName);
+					VersionProtocol protocol = new VersionProtocol("permission.register.queue");
 					protocol.setClassName(className);
 					protocol.setMsgBody(json);
 					try {
-						producer.sendPermissionRegister(protocol);
+						producer.sendMQMessage(protocol);
 					} catch (JMSException e) {
 						e.printStackTrace();
 					}

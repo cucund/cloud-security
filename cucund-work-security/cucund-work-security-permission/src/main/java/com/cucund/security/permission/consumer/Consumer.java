@@ -33,6 +33,7 @@ public class Consumer {
 	
 	@Autowired  
     private DiscoveryClient discoveryClient; 
+	
 	/**
 	 * 处理 扫描到的action
 	 * @param msg
@@ -70,7 +71,7 @@ public class Consumer {
 		if(errorMsg.equals("update")){//需要更新状态
 			GatewayApiDefine update = new GatewayApiDefine();
 			update.setServiceId(gatewayApiDefine.getServiceId());
-			update.setDataState(gatewayApiDefine.getDataState());
+			update.setDataState(1);
 			gatewayApiDefineService.updateGatewayApiDefine(update);
 		}
 		LOGGER.debug(protocol.getClassName()+":"+protocol.getAppKey()+":"+protocol.getQueueName()+"!! MSG:"+errorMsg);
@@ -172,9 +173,8 @@ public class Consumer {
 		return errorMsg;
 	}
 
-	@JmsListener(destination = "start.test.queue")
-	public void onlineReceive(String msg){
-		System.out.println("start.test.queue Msg 接受成功!! 内容:"+msg );
-	}
-	
+//	@JmsListener(destination = "start.test.queue")
+//	public void onlineReceive(String msg){
+//		System.out.println("start.test.queue Msg 接受成功!! 内容:"+msg );
+//	}
 }

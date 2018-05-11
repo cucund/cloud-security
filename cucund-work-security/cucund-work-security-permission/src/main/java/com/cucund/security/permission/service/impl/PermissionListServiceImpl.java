@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import com.cucund.security.permission.service.PermissionListService;
 @Service
 public class PermissionListServiceImpl implements PermissionListService{
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(PermissionListServiceImpl.class);
 	@Autowired
 	PermissionListMapper permissionListMapper;
 	
@@ -53,7 +56,7 @@ public class PermissionListServiceImpl implements PermissionListService{
 		if(null==permissionList.getGmtCreate())permissionList.setGmtCreate(getSysDate());
 		if(StringUtils.isBlank(permissionList.getPermissionListCode())) {
 			int code = getMaxCodeList();
-			permissionList.setPermissionListCode(makeMaxCode8(++code));
+			permissionList.setPermissionListCode(makeMaxCode8(code));
 		}
 	}
 	public String makeMaxCode(int code, int len) {
@@ -75,15 +78,20 @@ public class PermissionListServiceImpl implements PermissionListService{
 		return makeMaxCode(code, 6);
 	}
 
-	private int getMaxCodeList() {
-		int code = 0 ;
-		try {
-			code = permissionListMapper.getMaxCode();
-			System.out.println(code);
-		} catch (Exception e) {
-			System.out.println(e);
+	//计数
+	private Integer code = null;
+	
+	private synchronized int getMaxCodeList() {
+		if(code==null){
+			try {
+				int num = permissionListMapper.getMaxCode();
+				code = num;
+			} catch (Exception e) {
+				code = 0;
+			}
 		}
-		return code;
+		LOGGER.info("code:"+code);
+		return ++code;
 	}
 	/**
 	 * 获取系统时间

@@ -31,16 +31,17 @@ public class ServerConfig {
 	@Autowired
     private DiscoveryClient discoveryClient;  
 	
+	@SuppressWarnings("deprecation")
 	@PostConstruct
 	public void initIt() throws Exception {
 		GatewayApiDefine gatewayApiDefine = new GatewayApiDefine();
 		gatewayApiDefine.setServiceId(appName);
 		String json = JSONObject.toJSONString(gatewayApiDefine);
-		VersionProtocol protocol = new VersionProtocol();
+		VersionProtocol protocol = new VersionProtocol("gatewayApi.register.queue");
 		protocol.setAppKey(appName);
 		protocol.setClassName(ServerConfig.class.getName());
 		protocol.setMsgBody(json);
-		producer.sendGatewayApiRegister(protocol);
+		producer.sendMQMessage(protocol);
 		ServiceInstance local = discoveryClient.getLocalServiceInstance();
 		ip = local.getHost();
 	}
@@ -52,11 +53,11 @@ public class ServerConfig {
 		gatewayApiDefine.setUrl(ip+":"+port);//查询离线时是否在 service实例中
 		gatewayApiDefine.setDataState(0);
 		String json = JSONObject.toJSONString(gatewayApiDefine);
-		VersionProtocol protocol = new VersionProtocol();
+		VersionProtocol protocol = new VersionProtocol("gatewayApi.offline.queue");
 		protocol.setAppKey(appName);
 		protocol.setClassName(ServerConfig.class.getName());
 		protocol.setMsgBody(json);
-		producer.sendGatewayApiOffline(protocol);
+		producer.sendMQMessage(protocol);
 	}
 
 }
