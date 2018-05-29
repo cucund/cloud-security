@@ -4,16 +4,36 @@ Navicat MySQL Data Transfer
 Source Server         : 本地连接
 Source Server Version : 50622
 Source Host           : 127.0.0.1:3306
-Source Database       : permission
+Source Database       : cloud_security
 
 Target Server Type    : MYSQL
 Target Server Version : 50622
 File Encoding         : 65001
 
-Date: 2018-05-03 18:05:18
+Date: 2018-05-29 11:42:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for gateway_api_define
+-- ----------------------------
+DROP TABLE IF EXISTS `gateway_api_define`;
+CREATE TABLE `gateway_api_define` (
+  `id` varchar(50) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `service_id` varchar(50) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `retryable` tinyint(1) DEFAULT NULL,
+  `data_state` int(11) NOT NULL,
+  `strip_prefix` int(11) DEFAULT NULL,
+  `api_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of gateway_api_define
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for permission_list
@@ -44,4 +64,8 @@ CREATE TABLE `permission_list` (
   `PERMISSION_LIST_AUTH_LOGIN` int(2) DEFAULT NULL,
   PRIMARY KEY (`PERMISSION_LIST_ID`),
   UNIQUE KEY `UDX_UP_PERMISSION_LIST` (`PERMISSION_LIST_ACTION`,`PERMISSION_LIST_METHOD`,`APPMANAGE_ICODE`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of permission_list
+-- ----------------------------

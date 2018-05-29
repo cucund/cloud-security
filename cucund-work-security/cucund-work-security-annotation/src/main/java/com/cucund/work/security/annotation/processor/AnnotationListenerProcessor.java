@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cucund.security.common.utils.HttpUtils;
 import com.cucund.work.security.amq.config.VersionProtocol;
 import com.cucund.work.security.annotation.ConParameter;
 import com.cucund.work.security.annotation.bean.ConParameterEnum;
 import com.cucund.work.security.annotation.bean.PermissionList;
+import com.cucund.work.security.annotation.chain.RestMappingHandlerExecutionChain;
 import com.cucund.work.security.annotation.provider.Producer;
 
 /**
@@ -59,42 +61,33 @@ public class AnnotationListenerProcessor implements BeanPostProcessor {
 			return bean;
 		}
 		Controller controller = AnnotationUtils.findAnnotation(bean.getClass(), Controller.class);
-		if(null ==controller){//类上是否被注解Controller 修饰
-			return bean;
-		}
 		RestController restController = AnnotationUtils.findAnnotation(bean.getClass(), RestController.class);
-		if(null ==restController){//类上是否被注解RestController 修饰
+		if(null ==restController||null == controller){//类上是否被注解RestController或者Controller 修饰
 			return bean;
 		}
+		send(bean, className);
+		return bean;
+	}
+
+	private void send(Object bean, String className) {
 		Method[] methods = ReflectionUtils.getAllDeclaredMethods(bean.getClass());
 		if (methods != null) {
 			RequestMapping classAnnotation = AnnotationUtils.findAnnotation(bean.getClass(), RequestMapping.class);
 			String clazzPath = "";
 			if(null!=classAnnotation){//类上是否被注解RequestMapping 修饰
 				String[] path = classAnnotation.value();
-				clazzPath = getUrl(path);
+				clazzPath = HttpUtils.getUrl(path);
 			}
 			for (Method method : methods) {
-				PermissionList permission = null;
-				RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-				if (null != requestMapping) {//方法上是否被注解RequestMapping 修饰
-					permission = getMapping(requestMapping);
-				}
-				GetMapping getMapping = AnnotationUtils.findAnnotation(method, GetMapping.class);
-				if (null != getMapping) {//方法上是否被注解GetMapping 修饰
-					permission = getMapping4Get(getMapping);
-				}
-				PostMapping postMapping = AnnotationUtils.findAnnotation(method, PostMapping.class);
-				if (null != postMapping) {//方法上是否被注解PostMapping 修饰
-					permission = getMapping4Post(postMapping);
-				}
+				PermissionList permission = makePermissionList(method);
 				if(null!=permission){//获得的内容是否为空   ,其他rest风格请自行添加
 					permission.setPermissionListClass(className);
 					permission.setPermissionListAction(clazzPath+permission.getPermissionListAction());
 					permission.setAppmanageIcode(appName);
 					getConParameterAnnotataion(permission,method);//获取当前方法下是否有ConParameter注解
-					//初始化协议
 					String json = JSONObject.toJSONString(permission);
+					
+					//初始化协议
 					VersionProtocol protocol = new VersionProtocol("permission.register.queue");
 					protocol.setClassName(className);
 					protocol.setMsgBody(json);
@@ -106,7 +99,6 @@ public class AnnotationListenerProcessor implements BeanPostProcessor {
 				}
 			}
 		}
-		return bean;
 	}
 	/**
 	 * 根据自定义的注释取出里面的数据,更新permission
@@ -132,88 +124,13 @@ public class AnnotationListenerProcessor implements BeanPostProcessor {
 		permission.setDataState(1);
 	}
 
-	private PermissionList getMapping4Post(PostMapping result) {
-		//插入到数据中
-		String name= result.name();
-		String path= arrayGetString(result.value());
-		PermissionList requestMap = new PermissionList();
-		requestMap.setPermissionListAction(path);
-		requestMap.setPermissionListName(name);
-		requestMap.setPermissionListMethod("GET");
-		return requestMap;
-	}
-
-	private PermissionList getMapping4Get(GetMapping result) {
-		//插入到数据中
-		String name= result.name();
-		String path= arrayGetString(result.value());
-		PermissionList requestMap = new PermissionList();
-		requestMap.setPermissionListAction(path);
-		requestMap.setPermissionListName(name);
-		requestMap.setPermissionListMethod("POST");
-		return requestMap;
-	}
-
-	private PermissionList getMapping(RequestMapping result){
-		//插入到数据中
-		String name= result.name();
-		RequestMethod[] resultRest = result.method();
-		PermissionList requestMap = new PermissionList();
-		requestMap.setPermissionListAction(getUrl(result.value()));
-		requestMap.setPermissionListName(name);
-		String methodStr = getMethodRest(resultRest);
-		requestMap.setPermissionListMethod(methodStr);
-		return requestMap;
-	}
-
-	private String getMethodRest(RequestMethod[] resultRest) {
-		String methodStr = "";
-		if(resultRest.length==0){
-			methodStr = "*";
-		}else{
-			String[] strs = new String[resultRest.length];
-			for (int i = 0; i < resultRest.length; i++) {
-				RequestMethod requestMethod = resultRest[i];
-				strs[0] = requestMethod.name();
-				methodStr = arrayGetString(strs);
-			}
-		}
-		return methodStr;
-	}
 	
-	private String getUrl(String[] url){
-		StringBuffer sb=new  StringBuffer();
-		if(url.length == 0){
-			return "";
-		}
-		String path = url[0];
-		if(path.equals("/")){
-			return "/";
-		}
-		String[] split = path.split("/");
-		for(int i=0;i<split.length;i++){
-			String item = split[i];
-			if(!StringUtils.isNotBlank(item)){
-				continue;
-			}
-			sb.append("/");
-			if(item.indexOf("{")==0&&item.indexOf("}")==item.length()-1){
-				sb.append("*");
-				continue;
-			}
-			sb.append(item);
-		}
-		String strn=sb.toString();
-		return strn;
-	}
-	
-	private String arrayGetString(String[] strs){
-		StringBuffer sb=new  StringBuffer();
-		for(int i=0;i<strs.length;i++){
-			if(i != 0){sb.append(",");}
-			sb.append(strs[i]);
-		}
-		String strn=sb.toString();
-		return strn;
-	}
+    public PermissionList makePermissionList(Method method) {
+        
+        if (method == null) {
+            return null;
+        }
+        
+        return  RestMappingHandlerExecutionChain.newInstance().execute(method);
+    }
 }

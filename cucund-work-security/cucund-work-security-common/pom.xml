@@ -7,10 +7,19 @@
 		<version>1.0.0</version>
 	</parent>
 	<artifactId>cucund-work-security-common</artifactId>
+	
+	<properties>
+		<commons-collections.version>3.2.1</commons-collections.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${commons-collections.version}</version>
 		</dependency>
 	</dependencies>
 </project>
